@@ -1,0 +1,42 @@
+{
+  "name": "bristol-su/typeform-service",
+  "description": "A third party service for typeform",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Toby Twigger",
+      "email": "toby.twigger@bristol.ac.uk"
+    }
+  ],
+  "require": {
+    "php": "^7.2",
+    "bristol-su/support": "@dev",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "orchestra/testbench": "^4.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "BristolSU\\Service\\Typeform\\": "src/"
+    } 
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "BristolSU\\Service\\Tests\\Typeform\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "BristolSU\\Service\\Typeform\\TypeformServiceProvider"
+      ]
+    }
+  },
+  "repositories": [
+    {
+      "type": "path",
+      "url": "../../support/support"
+    }
+  ]
+}
