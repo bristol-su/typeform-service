@@ -32,11 +32,5 @@
         "BristolSU\\Service\\Typeform\\TypeformServiceProvider"
       ]
     }
-  },
-  "repositories": [
-    {
-      "type": "path",
-      "url": "../../support/support"
-    }
-  ]
+  }
 }
