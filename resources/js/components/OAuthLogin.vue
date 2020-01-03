@@ -39,7 +39,7 @@
         data() {
             return {
                 clientId: 'DoKsNjjrmTVNskHBBoCheX3DV9EeZtjxK8g6rwRZgP3t',
-                scope: 'offline+accounts:read+responses:read',
+                scope: 'offline+accounts:read+responses:read+webhooks:read+webhooks:write+forms:read',
                 state: '12345',
                 redirect_uri: 'https://portal.local/_connector/typeform/redirect',
                 code_uri: '/api/_connector/typeform/code',

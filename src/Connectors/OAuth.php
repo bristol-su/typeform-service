@@ -71,7 +71,7 @@ class OAuth extends Connector
                     'refresh_token' => $authCode->refresh_token,
                     'client_id' => config('typeform_service.client_id'),
                     'client_secret' => config('typeform_service.client_secret'),
-                    'scope' => 'offline accounts:read responses:read'
+                    'scope' => 'offline accounts:read responses:read webhooks:read webhooks:write forms:read'
                 ],
             ]);
         } catch (GuzzleException $e) {
