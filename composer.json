@@ -2,6 +2,8 @@
   "name": "bristol-su/typeform-service",
   "description": "A third party service for typeform",
   "license": "MIT",
+  "minimum-stability": "dev",
+  "prefer-stable": false,
   "authors": [
     {
       "name": "Toby Twigger",
