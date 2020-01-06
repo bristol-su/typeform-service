@@ -3,7 +3,7 @@
 namespace BristolSU\Service\Typeform\Http\Controllers;
 
 use BristolSU\Service\Typeform\Models\TypeformAuthCode;
-use BristolSU\Support\Authentication\Contracts\UserAuthentication;
+use BristolSU\Support\User\Contracts\UserAuthentication;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
