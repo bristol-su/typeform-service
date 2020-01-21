@@ -22,7 +22,7 @@ class OAuthRedirectController
                 'code' => $request->input('code'),
                 'client_id' => config('typeform_service.client_id'),
                 'client_secret' => config('typeform_service.client_secret'),
-                'redirect_uri' => 'https://portal.local/_connector/typeform/redirect'
+                'redirect_uri' => config('app.url') . '/_connector/typeform/redirect'
             ],
         ]);
         $token = json_decode($response->getBody()->getContents(), true);
