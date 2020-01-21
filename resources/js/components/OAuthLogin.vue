@@ -42,7 +42,6 @@
                 scope: 'offline+accounts:read+responses:read+webhooks:read+webhooks:write+forms:read',
                 state: '12345',
                 redirect_uri: '/_connector/typeform/redirect',
-                code_uri: '/api/_connector/typeform/code',
                 authTokens: [],
                 loadingCodes: false,
                 intervalId: null
@@ -63,7 +62,7 @@
         methods: {
             loadCodes() {
                 this.loadingCodes = true;
-                return this.$http.get(this.code_uri)
+                return this.$http.get('/api/_connector/typeform/code')
                     .then(response => {
                         let newLogin = this.isNewLogin(response.data);
                         this.authTokens = response.data;

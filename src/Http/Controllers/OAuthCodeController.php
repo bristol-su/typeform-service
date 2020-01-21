@@ -4,7 +4,6 @@ namespace BristolSU\Service\Typeform\Http\Controllers;
 
 use BristolSU\Service\Typeform\Models\TypeformAuthCode;
 use BristolSU\Support\User\Contracts\UserAuthentication;
-use Carbon\Carbon;
 
 class OAuthCodeController
 {
