@@ -96,7 +96,7 @@
                     + "&scope="
                     + this.scope
                     + "&redirect_uri="
-                    + portal.APP_URL + '/' + this.redirect_uri
+                    + portal.APP_URL + this.redirect_uri
                     + "&state=" + this.state;
             },
             loginOptions() {
@@ -109,7 +109,7 @@
             }
         },
         
-        destroy() {
+        destroyed() {
             window.clearInterval(this.intervalId)
         }
     }

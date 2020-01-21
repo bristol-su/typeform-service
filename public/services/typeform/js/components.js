@@ -212,7 +212,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     oauthUrl: function oauthUrl() {
-      return "https://api.typeform.com/oauth/authorize?client_id=" + this.clientId + "&scope=" + this.scope + "&redirect_uri=" + portal.APP_URL + '/' + this.redirect_uri + "&state=" + this.state;
+      return "https://api.typeform.com/oauth/authorize?client_id=" + this.clientId + "&scope=" + this.scope + "&redirect_uri=" + portal.APP_URL + this.redirect_uri + "&state=" + this.state;
     },
     loginOptions: function loginOptions() {
       return this.authTokens.map(function (token) {
@@ -226,7 +226,7 @@ __webpack_require__.r(__webpack_exports__);
       return this.loadingCodes ? 'fa-spin' : '';
     }
   },
-  destroy: function destroy() {
+  destroyed: function destroyed() {
     window.clearInterval(this.intervalId);
   }
 });
