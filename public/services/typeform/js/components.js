@@ -138,7 +138,8 @@ __webpack_require__.r(__webpack_exports__);
       redirect_uri: '/_connector/typeform/redirect',
       code_uri: '/api/_connector/typeform/code',
       authTokens: [],
-      loadingCodes: false
+      loadingCodes: false,
+      intervalId: null
     };
   },
   created: function created() {
@@ -147,7 +148,7 @@ __webpack_require__.r(__webpack_exports__);
   mounted: function mounted() {
     var _this = this;
 
-    window.setInterval(function () {
+    this.intervalId = window.setInterval(function () {
       _this.loadCodes();
     }, 2500);
   },
@@ -224,6 +225,9 @@ __webpack_require__.r(__webpack_exports__);
     spinClasses: function spinClasses() {
       return this.loadingCodes ? 'fa-spin' : '';
     }
+  },
+  destroy: function destroy() {
+    window.clearInterval(this.intervalId);
   }
 });
 

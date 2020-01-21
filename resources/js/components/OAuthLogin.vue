@@ -44,7 +44,8 @@
                 redirect_uri: '/_connector/typeform/redirect',
                 code_uri: '/api/_connector/typeform/code',
                 authTokens: [],
-                loadingCodes: false
+                loadingCodes: false,
+                intervalId: null
             }
         },
 
@@ -53,7 +54,7 @@
         },
 
         mounted() {
-            window.setInterval(() => {
+            this.intervalId = window.setInterval(() => {
                 this.loadCodes();
             }, 2500)
         },
@@ -106,6 +107,10 @@
             spinClasses() {
                 return (this.loadingCodes?'fa-spin':'');
             }
+        },
+        
+        destroy() {
+            window.clearInterval(this.intervalId)
         }
     }
 </script>
