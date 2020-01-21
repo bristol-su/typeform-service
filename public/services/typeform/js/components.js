@@ -135,7 +135,7 @@ __webpack_require__.r(__webpack_exports__);
       clientId: 'DoKsNjjrmTVNskHBBoCheX3DV9EeZtjxK8g6rwRZgP3t',
       scope: 'offline+accounts:read+responses:read+webhooks:read+webhooks:write+forms:read',
       state: '12345',
-      redirect_uri: 'https://portal.local/_connector/typeform/redirect',
+      redirect_uri: '/_connector/typeform/redirect',
       code_uri: '/api/_connector/typeform/code',
       authTokens: [],
       loadingCodes: false
@@ -211,7 +211,7 @@ __webpack_require__.r(__webpack_exports__);
   },
   computed: {
     oauthUrl: function oauthUrl() {
-      return "https://api.typeform.com/oauth/authorize?client_id=" + this.clientId + "&scope=" + this.scope + "&redirect_uri=" + this.redirect_uri + "&state=" + this.state;
+      return "https://api.typeform.com/oauth/authorize?client_id=" + this.clientId + "&scope=" + this.scope + "&redirect_uri=" + portal.APP_URL + '/' + this.redirect_uri + "&state=" + this.state;
     },
     loginOptions: function loginOptions() {
       return this.authTokens.map(function (token) {
