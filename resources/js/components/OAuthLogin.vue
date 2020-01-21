@@ -38,7 +38,7 @@
 
         data() {
             return {
-                clientId: 'DoKsNjjrmTVNskHBBoCheX3DV9EeZtjxK8g6rwRZgP3t',
+                clientId: '',
                 scope: 'offline+accounts:read+responses:read+webhooks:read+webhooks:write+forms:read',
                 state: '12345',
                 redirect_uri: '/_connector/typeform/redirect',
@@ -50,6 +50,7 @@
         },
 
         created() {
+            this.clientId = portal.typeform_client_id;
             this.loadCodes();
         },
 

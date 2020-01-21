@@ -8,6 +8,7 @@ use BristolSU\Support\Connection\Contracts\ConnectorStore;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
+use Laracasts\Utilities\JavaScript\JavaScriptFacade;
 
 class TypeformServiceProvider extends ServiceProvider
 {
@@ -56,6 +57,10 @@ class TypeformServiceProvider extends ServiceProvider
                 ->namespace('BristolSU\Service\Typeform\Http\Controllers')
                 ->group(__DIR__ . '/../routes/api.php');
         });
+        
+        JavaScriptFacade::put([
+            'typeform_client_id' => config('typeform_service.client_id')
+        ]);
 
     }
 
