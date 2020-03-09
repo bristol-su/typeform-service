@@ -15,7 +15,7 @@ class ApiKey extends Connector
      */
     public function request($method, $uri, array $options = [])
     {
-        $options['base_uri'] = config('typeform.api.base_uri');
+        $options['base_uri'] = config('typeform_service.base_uri');
         $headers = ((isset($options['headers']) && is_array($options['headers']))?$options['headers']:[]);
         $headers['Authorization'] = 'Bearer ' . $this->getSetting('api_key');
         $options['headers'] = $headers;

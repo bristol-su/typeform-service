@@ -7,15 +7,12 @@ use BristolSU\Support\User\Contracts\UserAuthentication;
 use Carbon\Carbon;
 use GuzzleHttp\Client;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Cookie;
 
 class OAuthRedirectController
 {
 
     public function index(Request $request, Client $client)
     {
-        // TODO move into OAuth
         $response = $client->post(config('typeform_service.urlAccessToken'), [
             'form_params' => [
                 'grant_type' => 'authorization_code',
@@ -30,7 +27,7 @@ class OAuthRedirectController
         $authCode->auth_code = $token['access_token'];
         $authCode->refresh_token = $token['refresh_token'];
         $authCode->expires_at = Carbon::now()->addSeconds($token['expires_in']);
-        $authCode->user_id = app(UserAuthentication::class)->getUser()->control_id;
+        $authCode->user_id = app(UserAuthentication::class)->getUser()->controlId();
         $authCode->save();
         
         return view('typeformservice::close_window');
