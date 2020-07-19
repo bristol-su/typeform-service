@@ -25,7 +25,7 @@
         "bootstrap-vue": "^2.1.0",
         "domurl": "^2.2.0",
         "jquery": "^3.4.1",
-        "lodash": "^4.17.15",
+        "lodash": "^4.17.19",
         "moment": "^2.24.0",
         "popper.js": "^1.16.0",
         "portal-vue": "^2.1.6",
