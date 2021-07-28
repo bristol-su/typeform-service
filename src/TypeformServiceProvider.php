@@ -48,16 +48,16 @@ class TypeformServiceProvider extends ServiceProvider
         $this->registerGlobalScript('services/typeform/js/components.js');
 
         Route::prefix($this->app['config']->get('typeform_service.url_prefix'))
-            ->middleware(['web', 'auth'])
+            ->middleware(['web', 'portal-auth'])
             ->namespace('BristolSU\Service\Typeform\Http\Controllers')
             ->group(__DIR__ . '/../routes/web.php');
 
-        Route::prefix('api')->middleware(['api', 'auth'])->group(function () {
+        Route::prefix('api')->middleware(['api', 'portal-auth'])->group(function () {
             Route::prefix($this->app['config']->get('typeform_service.url_prefix'))
                 ->namespace('BristolSU\Service\Typeform\Http\Controllers')
                 ->group(__DIR__ . '/../routes/api.php');
         });
-        
+
         JavaScriptFacade::put([
             'typeform_client_id' => config('typeform_service.client_id')
         ]);
