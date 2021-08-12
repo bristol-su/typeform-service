@@ -3,14 +3,13 @@
 namespace BristolSU\Service\Typeform\Http\Controllers;
 
 use BristolSU\Service\Typeform\Models\TypeformAuthCode;
-use BristolSU\Support\User\Contracts\UserAuthentication;
 
 class OAuthCodeController
 {
 
-    public function index(UserAuthentication $userAuthentication)
+    public function index()
     {
         return TypeformAuthCode::valid()->get();
     }
-    
+
 }

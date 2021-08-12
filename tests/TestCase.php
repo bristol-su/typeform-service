@@ -7,16 +7,16 @@ use BristolSU\Support\Testing\AssertsEloquentModels;
 use Illuminate\Contracts\Encryption\Encrypter;
 use Illuminate\Support\Facades\Crypt;
 use Prophecy\Argument;
+use Prophecy\PhpUnit\ProphecyTrait;
 
 class TestCase extends \BristolSU\Support\Testing\TestCase
 {
-    
-    use AssertsEloquentModels;
+    use AssertsEloquentModels, ProphecyTrait;
 
     public function setUp(): void
     {
         parent::setUp();
-        
+
         $this->withFactories(__DIR__  . '/../database/factories');
     }
 
@@ -38,5 +38,5 @@ class TestCase extends \BristolSU\Support\Testing\TestCase
         });
         Crypt::swap($encrypter->reveal());
     }
-    
+
 }

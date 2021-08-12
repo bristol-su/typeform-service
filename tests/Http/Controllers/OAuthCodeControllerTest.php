@@ -5,17 +5,18 @@ namespace BristolSU\Service\Tests\Typeform\Http\Controllers;
 use BristolSU\ControlDB\Models\User;
 use BristolSU\Service\Tests\Typeform\TestCase;
 use BristolSU\Service\Typeform\Models\TypeformAuthCode;
-use BristolSU\Support\User\Contracts\UserAuthentication;
+use BristolSU\Support\Testing\HandlesAuthentication;
+use BristolSU\Support\Testing\HandlesAuthorization;
 use Carbon\Carbon;
 
 class OAuthCodeControllerTest extends TestCase
 {
+    use HandlesAuthentication;
 
     /** @test */
     public function it_returns_all_typeform_codes_from_the_last_10_minutes(){
         $user = factory(User::class)->create();
-        $databaseUser = factory(\BristolSU\Support\User\User::class)->create(['control_id' => $user->id()]);
-        app(UserAuthentication::class)->setUser($databaseUser);
+        $this->beUser($user);
 
         $valid = collect([
             factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(9)->subSeconds(55)]),
@@ -27,7 +28,7 @@ class OAuthCodeControllerTest extends TestCase
             factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(10)->subSeconds(2)]),
             factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(11)])
         ]);
-        
+
         $response = $this->get('/api/_connector/typeform/code');
 
         $response->assertJsonCount(3);
@@ -40,5 +41,5 @@ class OAuthCodeControllerTest extends TestCase
             ]);
         }
     }
-    
+
 }
