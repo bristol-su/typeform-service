@@ -7,13 +7,16 @@ use FormSchema\Schema\Field;
 class TypeformAuthCode extends Field
 {
 
-    protected $type = 'typeformAuthCode';
-    
     /**
      * @inheritDoc
      */
     public function getAppendedAttributes(): array
     {
         return [];
+    }
+
+    public function getType(): string
+    {
+        return 'p-typeform-auth-code';
     }
 }
