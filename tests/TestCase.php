@@ -16,8 +16,6 @@ class TestCase extends \BristolSU\Support\Testing\TestCase
     public function setUp(): void
     {
         parent::setUp();
-
-        $this->withFactories(__DIR__  . '/../database/factories');
     }
 
     public function getPackageProviders($app)

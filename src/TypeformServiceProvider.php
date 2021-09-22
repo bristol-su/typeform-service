@@ -16,17 +16,17 @@ class TypeformServiceProvider extends ServiceProvider
     public function register()
     {
         $this->publishes([__DIR__ . '/../config/config.php' => config_path('typeform_service.php'),
-        ], 'config');
+        ], ['config', 'module']);
         $this->mergeConfigFrom(
             __DIR__ . '/../config/config.php', 'typeform_service'
         );
 
-        $this->publishes([__DIR__ . '/../public/services/typeform' => public_path('services/typeform')]);
+        $this->publishes([__DIR__ . '/../public/services/typeform' => public_path('services/typeform')], ['module']);
         $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
 
         $this->publishes([
             __DIR__ . '/../resources/views' => resource_path('views/vendor/typeformservice'),
-        ], 'views');
+        ], ['views', 'module']);
 
         $this->loadViewsFrom(__DIR__ . '/../resources/views', 'typeformservice');
 

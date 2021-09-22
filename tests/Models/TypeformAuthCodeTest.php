@@ -19,12 +19,12 @@ class TypeformAuthCodeTest extends TestCase
 
     /** @test */
     public function a_model_can_be_created(){
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $expiresAt = Carbon::now()->addDay();
 
         $this->bypassEncryption();
 
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'user_id' => $user->id(),
             'auth_code' => 'abcdefghijklmnop',
             'refresh_token' => '1234567890',
@@ -42,7 +42,7 @@ class TypeformAuthCodeTest extends TestCase
 
     /** @test */
     public function the_auth_code_refresh_token_and_expires_at_are_all_hidden(){
-        $authCode = factory(TypeformAuthCode::class)->create();
+        $authCode = TypeformAuthCode::factory()->create();
 
         $attributes = $authCode->toArray();
 
@@ -60,7 +60,7 @@ class TypeformAuthCodeTest extends TestCase
         $encrypter->decrypt('RefreshToken123')->shouldBeCalled()->willReturn('RefreshToken1');
         Crypt::swap($encrypter->reveal());
 
-        $authCode = factory(TypeformAuthCode::class)->create(['auth_code' => 'AuthCode1', 'refresh_token' => 'RefreshToken1']);
+        $authCode = TypeformAuthCode::factory()->create(['auth_code' => 'AuthCode1', 'refresh_token' => 'RefreshToken1']);
         $this->assertDatabaseHas('typeform_auth_codes', [
             'auth_code' => 'AuthCode123',
             'id' => $authCode->id,
@@ -73,7 +73,7 @@ class TypeformAuthCodeTest extends TestCase
 
     /** @test */
     public function isValid_returns_true_if_expires_at_is_in_the_future(){
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'expires_at' => Carbon::now()->addDay()
         ]);
 
@@ -82,7 +82,7 @@ class TypeformAuthCodeTest extends TestCase
 
     /** @test */
     public function isValid_returns_true_if_expires_at_is_in_the_past(){
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'expires_at' => Carbon::now()->subDay()
         ]);
 
@@ -92,18 +92,18 @@ class TypeformAuthCodeTest extends TestCase
     /** @test */
     public function scopeValid_only_returns_auth_codes_which_have_been_created_in_the_last_10_minutes_and_belong_to_the_user(){
 
-        $user = factory(User::class)->create();
+        $user = User::factory()->create();
         $this->beUser($user);
 
         $valid = collect([
-            factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(9)->subSeconds(55)]),
-            factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinute()]),
-            factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()])
+            TypeformAuthCode::factory()->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(9)->subSeconds(55)]),
+            TypeformAuthCode::factory()->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinute()]),
+            TypeformAuthCode::factory()->create(['user_id' => $user->id(), 'created_at' => Carbon::now()])
         ]);
         $invalid = collect([
-            factory(TypeformAuthCode::class)->create(['created_at' => Carbon::now()->subDay()]),
-            factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(10)->subSeconds(2)]),
-            factory(TypeformAuthCode::class)->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(11)])
+            TypeformAuthCode::factory()->create(['created_at' => Carbon::now()->subDay()]),
+            TypeformAuthCode::factory()->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(10)->subSeconds(2)]),
+            TypeformAuthCode::factory()->create(['user_id' => $user->id(), 'created_at' => Carbon::now()->subMinutes(11)])
         ]);
 
         $codes = TypeformAuthCode::valid()->get();

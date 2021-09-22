@@ -1,40 +1,26 @@
 <template>
     <div>
-        <b-row>
-            <b-col sm="12" md="8">
-                
-                <label class="sr-only" for="auth-token-id">Login</label>
-                <b-input-group>
-                    <b-input-group-prepend>
-                        <b-button @click="loadCodes" variant="outline-info" size="sm"><i :class="spinClasses" class="fa fa-refresh"/></b-button>
-                    </b-input-group-prepend>
+        <p-select
+            id="oauth-login"
+            v-model="dynamicValue"
+            :select-options="loginsForSelect"
+            null-label="-- No Logins --">
 
-                    <b-form-select id="auth-token-id" v-model="value" :options="loginOptions" >
-                        <template v-slot:first>
-                            <option :value="null" disabled>-- No recent logins --</option>
-                        </template>
-                    </b-form-select>
-                </b-input-group>
-                    
-            </b-col>
-            <b-col sm="12" md="4" style="text-align: right; ">
-                <div ref="tfLoginButton">
-                    <a :href="oauthUrl" class="tf-login-button" target="_blank">Log in to Typeform</a>
-                </div>
-            </b-col>
-        </b-row>
+        </p-select>
+
+        <div ref="tfLoginButton">
+            <a :href="oauthUrl" class="tf-login-button" target="_blank">Log in to Typeform</a>
+        </div>
     </div>
 </template>
 
 <script>
-    import { abstractField } from 'vue-form-generator';
-    
+    import FormInputMixin from '@bristol-su/portal-ui-kit/src/components/atomic/dynamic-form/FormInputMixin';
+
     export default {
         name: "OAuthLogin",
 
-        mixins: [ abstractField ],
-        
-        props: {},
+        mixins: [ FormInputMixin ],
 
         data() {
             return {
@@ -44,12 +30,12 @@
                 redirect_uri: '/_connector/typeform/redirect',
                 authTokens: [],
                 loadingCodes: false,
-                intervalId: null
+                intervalId: null,
             }
         },
 
         created() {
-            this.clientId = portal.typeform_client_id;
+            this.clientId = this.$tools.utils.WindowAccessor.get('typeform_client_id');
             this.loadCodes();
         },
 
@@ -58,20 +44,22 @@
                 this.loadCodes();
             }, 2500)
         },
-        
+
         methods: {
             loadCodes() {
-                this.loadingCodes = true;
-                return this.$http.get('/api/_connector/typeform/code')
-                    .then(response => {
-                        let newLogin = this.isNewLogin(response.data);
-                        this.authTokens = response.data;
-                        if(newLogin !== false) {
-                            this.value = newLogin.id
-                        }
-                    })
-                    .catch(error => this.$notify.alert('Could not load logins'))
-                    .then(() => this.loadingCodes = false);
+                if(this.loadingCodes === false) {
+                    this.loadingCodes = true;
+                    return this.$httpBasic.get('_connector/typeform/code')
+                        .then(response => {
+                            let newLogin = this.isNewLogin(response.data);
+                            this.authTokens = response.data;
+                            if(newLogin !== false) {
+                                this.setValue(newLogin.id)
+                            }
+                        })
+                        .catch(error => this.$notify.alert('Could not load logins'))
+                        .then(() => this.loadingCodes = false);
+                }
             },
 
             isNewLogin(newValue) {
@@ -96,19 +84,16 @@
                     + "&scope="
                     + this.scope
                     + "&redirect_uri="
-                    + portal.APP_URL + this.redirect_uri
+                    + this.$tools.routes.basic.baseWebUrl() + this.redirect_uri
                     + "&state=" + this.state;
             },
-            loginOptions() {
-                return this.authTokens.map(token => {
-                    return {value: token.id, text: 'Login at ' + token.created_at}
-                });
+            loginsForSelect() {
+                return this.authTokens.map(t => {
+                    return { id: t.id, value: t.created_at };
+                })
             },
-            spinClasses() {
-                return (this.loadingCodes?'fa-spin':'');
-            }
         },
-        
+
         destroyed() {
             window.clearInterval(this.intervalId)
         }

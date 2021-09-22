@@ -44,7 +44,7 @@ class OAuth extends Connector
     static public function settingsSchema(): Form
     {
         return \FormSchema\Generator\Form::make()->withField(
-            Field::make(TypeformAuthCode::class, 'auth_code_id')->label('Log Into Typeform')->required(true)
+            Field::make(TypeformAuthCode::class, 'auth_code_id')->setLabel('Log Into Typeform')->setRequired(true)
         )->getSchema();
     }
 

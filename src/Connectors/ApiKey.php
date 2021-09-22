@@ -41,8 +41,8 @@ class ApiKey extends Connector
     static public function settingsSchema(): Form
     {
         return \FormSchema\Generator\Form::make()->withField(
-            Field::input('api_key')->inputType('text')->label('API Key')
-                ->description('You should be able to find this on Typeform')->required(true)
+            Field::textInput('api_key')->setLabel('API Key')
+                ->setHint('You should be able to find this on Typeform')->setRequired(true)
         )->getSchema();
     }
 }

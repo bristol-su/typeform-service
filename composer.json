@@ -17,7 +17,6 @@
     },
     "require-dev": {
         "orchestra/testbench": "^6.19",
-        "laravel/legacy-factories": "^1.1",
         "phpspec/prophecy-phpunit": "^2.0"
     },
     "autoload": {
@@ -27,7 +26,8 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "BristolSU\\Service\\Tests\\Typeform\\": "tests/"
+            "BristolSU\\Service\\Tests\\Typeform\\": "tests/",
+            "Database\\TypeformService\\Factories\\": "database/factories/"
         }
     },
     "extra": {
