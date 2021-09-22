@@ -7,10 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [3.0.0]
+
 ### Added
 - Use new UI kit
 
-## [2.0.1] - (12/08/2020)
+## [2.0.0] - (12/08/2020)
 
 ### Changed
 - Support SDK v5
