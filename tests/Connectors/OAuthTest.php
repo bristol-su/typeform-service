@@ -33,11 +33,11 @@ class OAuthTest extends TestCase
             'headers' => ['test' => 'abc', 'Authorization' => 'Bearer abc123'], 'base_uri' => 'https://example.com'
         ])->shouldBeCalled();
 
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'auth_code' => 'abc123',
             'expires_at' => Carbon::now()->addDay()
         ]);
-        
+
         $oAuth = new OAuth($client->reveal());
         $oAuth->setSettings([
             'auth_code_id' => $authCode->id
@@ -56,7 +56,7 @@ class OAuthTest extends TestCase
             'headers' => ['Authorization' => 'Bearer abc123'], 'base_uri' => 'https://example.com'
         ])->shouldBeCalled();
 
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'auth_code' => 'abc123',
             'expires_at' => Carbon::now()->addDay()
         ]);
@@ -67,11 +67,11 @@ class OAuthTest extends TestCase
         ]);
         $oAuth->request($method, $uri, []);
     }
-    
+
     /** @test */
     public function request_refreshes_the_auth_code_if_expired(){
         $this->bypassEncryption();
-        
+
         $client = $this->prophesize(Client::class);
         $method = 'GET';
         $uri = '/tests';
@@ -79,16 +79,16 @@ class OAuthTest extends TestCase
         app(Repository::class)->set('typeform_service.urlAccessToken', 'https://test.com/bristol');
         app(Repository::class)->set('typeform_service.client_id', 'TypeformClientId');
         app(Repository::class)->set('typeform_service.client_secret', 'TypeformClientSecret');
-        
+
         $now = Carbon::now();
         Carbon::setTestNow($now);
-        
-        $authCode = factory(TypeformAuthCode::class)->create([
+
+        $authCode = TypeformAuthCode::factory()->create([
             'auth_code' => 'abc123',
             'refresh_token' => '123abcd',
             'expires_at' => Carbon::now()->subDay()
         ]);
-        
+
         $client->request($method, $uri, [
             'headers' => ['Authorization' => 'Bearer newAccessToken'], 'base_uri' => 'https://example.com'
         ])->shouldBeCalled();
@@ -103,7 +103,7 @@ class OAuthTest extends TestCase
         ])->shouldBeCalled()->willReturn(new Response(200, [], json_encode([
             'access_token' => 'newAccessToken', 'refresh_token' => 'newRefreshToken', 'expires_in' => 1000
         ])));
-        
+
 
 
         $oAuth = new OAuth($client->reveal());
@@ -111,7 +111,7 @@ class OAuthTest extends TestCase
             'auth_code_id' => $authCode->id
         ]);
         $oAuth->request($method, $uri, []);
-        
+
         $this->assertDatabaseHas('typeform_auth_codes', [
             'id' => $authCode->id,
             'auth_code' => 'newAccessToken',
@@ -135,12 +135,12 @@ class OAuthTest extends TestCase
         $now = Carbon::now();
         Carbon::setTestNow($now);
 
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'auth_code' => 'abc123',
             'refresh_token' => '123abcd',
             'expires_at' => Carbon::now()->subDay()
         ]);
-        
+
         $client->request('post', 'https://test.com/bristol', [
             'form_params' => [
                 'grant_type' => 'refresh_token',
@@ -163,10 +163,10 @@ class OAuthTest extends TestCase
     public function test_makes_a_get_request_to_the_me_endpoint_and_returns_true_if_no_exception_thrown(){
         $client = $this->prophesize(Client::class);
         $client->request('get', '/me', Argument::type('array'))->shouldBeCalled()->willReturn(['user' => []]);
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'expires_at' => Carbon::now()->addDay()
         ]);
-        
+
         $oAuth = new OAuth($client->reveal());
         $oAuth->setSettings(['auth_code_id' => $authCode->id]);
         $this->assertTrue(
@@ -179,7 +179,7 @@ class OAuthTest extends TestCase
         $client = $this->prophesize(Client::class);
         $exception = $this->prophesize(ClientException::class);
         $client->request('get', '/me', Argument::type('array'))->shouldBeCalled()->willThrow($exception->reveal());
-        $authCode = factory(TypeformAuthCode::class)->create([
+        $authCode = TypeformAuthCode::factory()->create([
             'expires_at' => Carbon::now()->addDay()
         ]);
         $oAuth = new OAuth($client->reveal());
@@ -188,5 +188,5 @@ class OAuthTest extends TestCase
             $oAuth->test()
         );
     }
-    
+
 }

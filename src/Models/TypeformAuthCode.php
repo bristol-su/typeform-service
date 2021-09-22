@@ -3,13 +3,16 @@
 namespace BristolSU\Service\Typeform\Models;
 
 use BristolSU\Support\Authentication\Contracts\Authentication;
+use Database\TypeformService\Factories\TypeformAuthCodeFactory;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Crypt;
 
 class TypeformAuthCode extends Model
 {
+    use HasFactory;
 
     protected $hidden = [
         'auth_code', 'expires_at', 'refresh_token'
@@ -69,4 +72,8 @@ class TypeformAuthCode extends Model
         return $date->format('Y-m-d H:i:s');
     }
 
+    protected static function newFactory()
+    {
+        return new TypeformAuthCodeFactory();
+    }
 }
